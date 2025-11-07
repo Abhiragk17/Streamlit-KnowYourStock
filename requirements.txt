@@ -1,0 +1,12 @@
+# Streamlit
+streamlit
+
+# HTTP Requests
+requests
+
+# LangChain (for message classes)
+langchain-core
+langchain
+
+# Environment Variables
+python-dotenv
