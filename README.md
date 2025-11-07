@@ -1,17 +1,97 @@
-# Streamlit Frontend - Finance Tweet Assistant
 
-A beautiful and modern Streamlit frontend for the Finance Tweet Assistant application.
+# KnowYourStock — Streamlit Frontend
 
-## Features
+This repository contains the Streamlit frontend for the KnowYourStock — an interactive UI that lets users search for stock information (Screener.in, stock metadata, news) and chat with an AI assistant using a backend FastAPI service.
 
-- 📊 **Stock Information Search**: Enter a stock name to get comprehensive financial information
-- 📈 **Three Information Tabs**:
-  - Company Information (Screenerinfo): Displays data from Screener.in
-  - Additional Information (Stocksinfo): Shows detailed stock metrics and analysis
-  - News: Lists recent news articles related to the stock
-- 💬 **Interactive Chat**: Chat with the AI assistant about finance and stocks
-- 🎨 **Attractive UI**: Modern, responsive design with beautiful styling
-- 💾 **Session State Management**: Proper state management for navigation and data persistence
+This README focuses on the frontend app located at `app.py` (root of this repo).
+
+## What this frontend does
+- Search for a stock by name and fetch structured results from the backend (company info, metrics, news).
+- Presents results in three tabs: Company Information (Screener), Additional Stock Info, and News.
+- Provides an interactive chat page which sends/receives messages to/from the backend chat endpoint. The chat keeps session state and context (selected stock ticker).
+- Uses a small set of custom CSS rules inside `app.py` for a polished UI.
+
+## Quick contract
+- Inputs: user stock name, chat messages, optional env var `API_BASE_URL` (or Streamlit secrets).
+- Outputs: rendered stock info (HTML/markdown), news list with links, and chat responses from the backend.
+- Error modes: shows Streamlit error messages when the backend is unreachable or API calls fail.
+
+## Dependencies
+The app's dependencies are in `requirements.txt`. Key packages:
+- streamlit
+- requests
+- langchain-core (used for message classes)
+- python-dotenv (optional)
+
+Install them with:
+
+```powershell
+# from the project root (Windows PowerShell)
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+## Configuration — API URL
+The frontend calls a backend FastAPI server. By default it looks for `API_BASE_URL` in the environment or Streamlit secrets and falls back to `http://localhost:8000`.
+
+You can set it in PowerShell for the current session like this:
+
+```powershell
+$env:API_BASE_URL = 'http://localhost:8000'
+```
+
+Or create `.streamlit/secrets.toml` with:
+
+```toml
+API_BASE_URL = "http://localhost:8000"
+```
+
+Note: `app.py` checks `os.getenv('API_BASE_URL')` first, then `st.secrets`, then the default.
+
+## Run the app (Windows PowerShell)
+
+1. Start (or ensure) your backend FastAPI server is running (default expected at `http://localhost:8000`).
+
+2. From the project root:
+
+```powershell
+# activate venv (if you created one)
+.\.venv\Scripts\Activate.ps1
+# run Streamlit app
+streamlit run app.py
+```
+
+Streamlit will open a browser window (usually at `http://localhost:8501`).
+
+## Usage notes
+- Home: enter a stock name (example: "Reliance", "TCS", "Infosys") and click "Get Stock Information". The app will call the backend `/langgraph` endpoint and display structured results.
+- Tabs: data is shown under Screener information, additional stock info, and news.
+- Chat: use the chat page to ask questions. The app sends chat messages to the backend `/chat` endpoint and preserves short message history for context.
+
+## Troubleshooting
+- If you see "API Not Connected" in the sidebar, verify that the backend is running and that `API_BASE_URL` points to the correct host and port.
+- CORS: The frontend uses requests from the server side (Streamlit backend). If you deploy the frontend separately (e.g., on Streamlit Cloud), ensure your FastAPI server allows CORS or proxy requests appropriately.
+- Timeouts: `app.py` sets timeouts for requests; long-running backend operations may return errors. Increase backend performance or adjust timeout in `app.py` if necessary.
+
+## Development tips
+- To modify UI styling, edit the CSS block inside `app.py` (search for the large st.markdown CSS string near the top).
+- The app uses `langchain_core` message classes (HumanMessage, AIMessage, SystemMessage) locally for session state. The API expects/returns messages in dictionary form — `app.py` handles conversions.
+
+## File map (frontend)
+- `app.py` — main Streamlit app (this file)
+- `requirements.txt` — Python requirements used by the app
+
+## Next steps & suggested improvements
+- Add a small `secrets.example.toml` to the repo with the `API_BASE_URL` example.
+- Add a lightweight smoke test (script) that checks the `/docs` endpoint of the backend and exits nonzero if unavailable.
+- If you plan to deploy the frontend separately, add instructions for environment variables and CORS configuration.
+
+## License & Contributing
+Feel free to open issues or PRs to improve the frontend. Add a LICENSE file if you want to specify project licensing.
+
+---
+Generated by an automated assistant after inspecting `app.py` and `requirements.txt`.
 
 ## Setup
 
