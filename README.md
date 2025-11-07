@@ -49,6 +49,15 @@ API_BASE_URL = "http://localhost:8000"
 
 Note: `app.py` checks `os.getenv('API_BASE_URL')` first, then `st.secrets`, then the default.
 
+Tip: a sample file has been added at `.streamlit/secrets.toml.example`. The recommended flow is:
+
+```powershell
+# copy the example to create your local secrets file
+Copy-Item -Path .\.streamlit\secrets.toml.example -Destination .\.streamlit\secrets.toml
+# then edit .streamlit\secrets.toml and update values
+notepad .\.streamlit\secrets.toml
+```
+
 ## Run the app (Windows PowerShell)
 
 1. Start (or ensure) your backend FastAPI server is running (default expected at `http://localhost:8000`).

@@ -7,7 +7,7 @@ from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, System
 
 # Page configuration
 st.set_page_config(
-    page_title="Finance Tweet Assistant",
+    page_title="KnowYourStock",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -204,14 +204,14 @@ def call_chat_api(message: str, context: Optional[Dict] = None, messages: Option
 def check_api_connection() -> bool:
     """Check if API is reachable"""
     try:
-        response = requests.get(f"{API_BASE_URL}/docs", timeout=2)
+        response = requests.get(f"{API_BASE_URL}", timeout=2)
         return response.status_code == 200
     except:
         return False
 
 def render_home_page():
     """Render the main home page with stock search"""
-    st.markdown('<div class="main-header">📈 Finance Tweet Assistant</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">📈 KnowYourStock </div>', unsafe_allow_html=True)
     
     # Sidebar
     with st.sidebar:
